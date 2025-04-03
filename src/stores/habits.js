@@ -5,38 +5,54 @@ export const useHabitsStore = defineStore('habitsStore', {
     habits: [],
     completions: {},
   }),
-  actions: {
-    addHabit(name) {
-      this.habits.push({ id, name, created_at });
-    },
-    toggleHabitCompletion(habitId, date) {
-      if (this.completions[date]?.[habitId]) {
-      }
-    },
-    loadFromLocalStorage() {
-      const storedData = localStorage.getItem('habits');
-      if (storedData) {
-        this.habits = JSON.parse(storedData);
-      } else {
-        this.habits = [];
-      }
-      const storedCompletions = localStorage.getItem('completions');
-      if (storedCompletions) {
-        this.completions = JSON.parse(storedCompletions);
-      } else {
-        this.completions = {};
-      }
-    },
-    saveToLocalStorage() {
-      localStorage.setItem('habits', JSON.stringify(this.habits));
-      localStorage.setItem('completions', JSON.stringify(this.completions));
-    },
-  },
   getters: {
     getHabitsForDate(date) {
       const dateString = date.toISOString().split('T')[0];
       return this.habits.filter(habit => habit.created_at <= dateString);
     },
-    isHabitCompleted(date, habitId) {},
+    isHabitCompleted: state => (date, habitId) => {
+      return Boolean(state.completions[date]?.[habitId]);
+    },
+  },
+  actions: {
+    addHabit(name) {
+      const habit = {
+        id: Date.now().toString(),
+        name,
+        created_at: format(new Date().toISOString.split('T')[0]),
+      };
+      this.habits.push(habit);
+      this.saveToLocalStorage();
+    },
+    toggleHabitCompletion(habitId, date) {
+      if (!this.completions[date]) {
+        this.completions[date] = {};
+      }
+      this.completions[date][habitId] = !this.completions[date][habitId];
+      this.saveToLocalStorage();
+    },
+    removeHabit(habitId) {
+      this.habits = this.habits.filter(habit => habit.id !== habitId);
+      Object.keys(this.completions).forEach(date => {
+        if (this.completions[date][habitId]) {
+          delete this.completions[date][habitId];
+        }
+      });
+      this.saveToLocalStorage();
+    },
+    loadFromLocalStorage() {
+      const storedData = localStorage.getItem('habits-data');
+      if (storedData) {
+        const data = JSON.parse(storedData);
+        this.habits = data.habits || [];
+        this.completions = data.completions || {};
+      }
+    },
+    saveToLocalStorage() {
+      localStorage.setItem(
+        'habits-data',
+        JSON.stringify({ habits: this.habits, completions: this.completions })
+      );
+    },
   },
 });
