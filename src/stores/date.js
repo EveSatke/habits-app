@@ -7,22 +7,24 @@ export const useDateStore = defineStore('dateStore', {
   }),
 
   getters: {
-    weekDates: state => {
-      const dates = new Set();
+    weekDates() {
+      const dates = [];
+      const current = new Date(this.currentDate);
+
       for (let i = -3; i <= 3; i++) {
-        const date = new Date(state.currentDate);
+        const date = new Date(current);
         date.setDate(date.getDate() + i);
-        dates.add(date.toISOString().split('T')[0]);
+        dates.push(date.toISOString().split('T')[0]);
       }
-      return Array.from(dates);
+      return dates;
     },
 
-    formattedDate: state => {
-      return format(new Date(state.currentDate), 'MMMM d, yyyy');
+    formattedDate() {
+      return format(new Date(this.currentDate), 'MMMM d, yyyy');
     },
 
-    isToday: state => {
-      return isToday(new Date(state.currentDate));
+    isToday() {
+      return isToday(new Date(this.currentDate));
     },
 
     isDateSelectable(date) {
@@ -31,8 +33,8 @@ export const useDateStore = defineStore('dateStore', {
   },
 
   actions: {
-    setDate(date) {
-      this.currentDate = date;
+    setDate(dateString) {
+      this.currentDate = dateString;
     },
 
     nextDay() {
@@ -54,13 +56,14 @@ export const useDateStore = defineStore('dateStore', {
     setDateFromRouter(routeDate) {
       this.currentDate = routeDate;
     },
-    formatDate(date) {
+    formatDate(dateString) {
+      const date = new Date(dateString);
       return {
-        date: date,
-        dayName: format(new Date(date), 'EEE'),
-        dayNumber: format(new Date(date), 'd'),
-        isToday: isToday(new Date(date)),
-        isSelected: this.currentDate === date,
+        date: dateString,
+        dayName: format(date, 'EEE'),
+        dayNumber: format(date, 'd'),
+        isToday: isToday(date),
+        isSelected: this.currentDate === dateString,
       };
     },
   },

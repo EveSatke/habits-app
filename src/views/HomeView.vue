@@ -5,6 +5,8 @@ import { useDateStore } from '@/stores/date';
 import { onMounted } from 'vue';
 import WeekNavigator from '@/components/WeekNavigator.vue';
 import ProfilePicture from '@/components/header/ProfilePicture.vue';
+import HabitList from '@/components/habits/HabitList.vue';
+
 const dateStore = useDateStore();
 const route = useRoute();
 const router = useRouter();
@@ -19,23 +21,12 @@ watch(
     dateStore.setDateFromRouter(newDate);
   }
 );
-
-function handAddHabitClick() {
-  router.push('/add-habit');
-}
 </script>
 
 <template>
   <main class="max-w-3xl mx-auto space-y-8 py-8">
     <header class="flex items-center justify-between mb-12">
       <ProfilePicture />
-      <!-- Streak indicator -->
-      <div
-        class="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-slate-100"
-      >
-        <span class="text-orange-500">🔥</span>
-        <span class="text-sm font-medium text-slate-700">5 day streak</span>
-      </div>
     </header>
 
     <WeekNavigator />
@@ -53,7 +44,7 @@ function handAddHabitClick() {
           + Add habit
         </router-link>
       </div>
-      <!-- Habits list will go here -->
+      <HabitList />
     </section>
   </main>
 </template>
