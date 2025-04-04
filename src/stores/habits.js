@@ -15,12 +15,13 @@ export const useHabitsStore = defineStore('habitsStore', {
     },
   },
   actions: {
-    addHabit(name) {
+    addHabit(name, date) {
       const habit = {
         id: Date.now().toString(),
-        name,
-        created_at: format(new Date().toISOString.split('T')[0]),
+        name: name.trim(),
+        created_at: date,
       };
+      console.log('Adding habit:', habit);
       this.habits.push(habit);
       this.saveToLocalStorage();
     },

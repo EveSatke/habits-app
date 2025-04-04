@@ -18,7 +18,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/add-habit',
+      path: '/habits/new',
       name: 'add habit',
       component: () => import('../views/AddHabitView.vue'),
     },

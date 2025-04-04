@@ -1,15 +1,12 @@
-<template>
-  <div class="about">
-    <h1>This is an add habit</h1>
-  </div>
-</template>
+<script setup>
+import HabitForm from '@/components/habits/HabitForm.vue';
+</script>
 
-<style>
-@media (width >= 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
+<template>
+  <main class="max-w-3xl mx-auto space-y-8 py-8">
+    <header>
+      <h1 class="text-2xl font-semibold text-slate-900">Create New Habit</h1>
+    </header>
+    <HabitForm />
+  </main>
+</template>
