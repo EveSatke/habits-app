@@ -1,5 +1,12 @@
 <script setup>
+import { useRoute } from 'vue-router';
+import { useHabitsStore } from '@/stores/habits';
 import HabitForm from '@/components/habits/HabitForm.vue';
+
+const route = useRoute();
+const habitStore = useHabitsStore();
+const habitId = route.params.id;
+const habit = habitStore.habits.find(h => h.id === habitId);
 </script>
 
 <template>
@@ -16,18 +23,15 @@ import HabitForm from '@/components/habits/HabitForm.vue';
               >
             </li>
             <li class="text-slate-400">/</li>
-            <li class="text-slate-900 font-medium">New Habit</li>
+            <li class="text-slate-900 font-medium">Edit Habit</li>
           </ol>
         </nav>
         <header class="mb-8">
           <h1 class="text-2xl font-semibold text-slate-900">
-            Create New Habit
+            Modify your habit details
           </h1>
-          <p class="mt-2 text-slate-600">
-            Start tracking a new habit to build a better routine
-          </p>
         </header>
-        <HabitForm mode="add" />
+        <HabitForm mode="edit" :habit="habit" />
       </div>
     </div>
   </main>

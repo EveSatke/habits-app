@@ -32,6 +32,20 @@ export const useHabitsStore = defineStore('habitsStore', {
       this.saveToLocalStorage();
     },
 
+    editHabit(habitId, newName) {
+      const habitIndex = this.habits.findIndex(h => h.id === habitId);
+
+      if (habitIndex !== -1) {
+        this.habits[habitIndex] = {
+          ...this.habits[habitIndex],
+          name: newName.trim(),
+        };
+        this.saveToLocalStorage();
+        return true;
+      }
+      return false;
+    },
+
     removeHabit(habitId) {
       this.habits = this.habits.filter(habit => habit.id !== habitId);
       Object.keys(this.completions).forEach(date => {

@@ -1,14 +1,29 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useHabitsStore } from '@/stores/habits';
 import Button from '@/components/ui/Button.vue';
 import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();
 const route = useRoute();
-const habitName = ref('');
 const habitStore = useHabitsStore();
 const errors = ref({});
+
+const props = defineProps({
+  mode: {
+    type: String,
+    required: true,
+    validator: value => ['add', 'edit'].includes(value),
+  },
+  habit: {
+    type: Object,
+    default: () => ({ name: '' }),
+  },
+});
+
+const habitName = ref(props.habit.name);
+
+const isEditMode = computed(() => props.mode === 'edit');
 
 function handleSubmit() {
   try {
@@ -16,16 +31,17 @@ function handleSubmit() {
       errors.value.name = 'Habit name must be at least 3 characters long';
       return;
     }
-    const date = route.query.date;
-    if (!date) {
-      errors.value.submit = 'No date provided';
-      return;
+    const date = route.query.date || new Date().toISOString().split('T')[0];
+    if (isEditMode.value) {
+      console.log('editing habit', props.habit.id, habitName.value);
+      habitStore.editHabit(props.habit.id, habitName.value);
+    } else {
+      habitStore.addHabit(habitName.value, date);
     }
-    habitStore.addHabit(habitName.value, date);
     router.push(`/day/${date}`);
   } catch (error) {
-    errors.value.submit = 'Failed to create habit. Please try again.';
-    console.error('Failed to create habit: ', error);
+    errors.value.submit = 'Failed to process habit. Please try again.';
+    console.error('Failed to process habit: ', error);
   }
 }
 </script>
@@ -67,7 +83,7 @@ function handleSubmit() {
     </div>
     <div class="flex flex-col gap-4 pt-4">
       <Button type="submit" :disabled="!habitName.trim()" class="w-full">
-        Create Habit
+        {{ isEditMode ? 'Save Changes' : 'Create Habit' }}
       </Button>
       <button
         type="button"

@@ -10,6 +10,7 @@ export const useDateStore = defineStore('dateStore', {
     weekDates() {
       const dates = [];
       const current = new Date(this.currentDate);
+      current.setHours(12, 0, 0, 0);
 
       for (let i = -3; i <= 3; i++) {
         const date = new Date(current);

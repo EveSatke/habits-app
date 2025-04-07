@@ -31,8 +31,8 @@ watch(
 
     <WeekNavigator />
 
-    <section class="space-y-6">
-      <div class="flex items-center justify-between">
+    <section>
+      <div class="flex items-center justify-between pb-6">
         <h2 class="text-xl font-semibold text-slate-900">
           <span v-if="dateStore.isToday">Today's habits</span>
           <span v-else>Habits for {{ dateStore.formattedDate }}</span>
