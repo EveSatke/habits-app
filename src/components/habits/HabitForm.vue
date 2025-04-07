@@ -67,6 +67,7 @@ function handleSubmit() {
           minlength="3"
           maxlength="50"
           autocomplete="off"
+          autofocus
         />
       </div>
 

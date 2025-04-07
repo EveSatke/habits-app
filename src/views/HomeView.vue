@@ -1,15 +1,14 @@
 <script setup>
 import { watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { useDateStore } from '@/stores/date';
 import { onMounted } from 'vue';
 import WeekNavigator from '@/components/WeekNavigator.vue';
 import ProfilePicture from '@/components/header/ProfilePicture.vue';
 import HabitList from '@/components/habits/HabitList.vue';
-
+import { PlusIcon } from '@heroicons/vue/24/solid';
 const dateStore = useDateStore();
 const route = useRoute();
-const router = useRouter();
 
 onMounted(() => {
   dateStore.setDateFromRouter(route.params.date);
@@ -39,9 +38,10 @@ watch(
         </h2>
         <router-link
           :to="`/habits/new?date=${route.params.date}`"
-          class="text-sm text-primary-500 hover:text-primary-600 font-medium"
+          class="inline-flex items-center px-4 py-2 bg-primary-500 text-white rounded-lg shadow-sm hover:bg-primary-600 transition-colors duration-200"
         >
-          + Add habit
+          <PlusIcon class="h-5 w-5 mr-2" />
+          Add habit
         </router-link>
       </div>
       <HabitList />
