@@ -25,23 +25,24 @@ const habitName = ref(props.habit.name);
 
 const isEditMode = computed(() => props.mode === 'edit');
 
+const date = computed(() => {
+  return route.params.date || new Date().toISOString().split('T')[0];
+});
+
 function handleSubmit() {
   try {
     if (habitName.value.trim().length < 3) {
       errors.value.name = 'Habit name must be at least 3 characters long';
       return;
     }
-    const date = route.query.date || new Date().toISOString().split('T')[0];
     if (isEditMode.value) {
-      console.log('editing habit', props.habit.id, habitName.value);
       habitStore.editHabit(props.habit.id, habitName.value);
     } else {
-      habitStore.addHabit(habitName.value, date);
+      habitStore.addHabit(habitName.value, date.value);
     }
-    router.push(`/day/${date}`);
+    router.push(`/day/${date.value}`);
   } catch (error) {
     errors.value.submit = 'Failed to process habit. Please try again.';
-    console.error('Failed to process habit: ', error);
   }
 }
 </script>

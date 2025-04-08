@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useDateStore } from '@/stores/date';
 import { useRouter } from 'vue-router';
+import { ChevronRightIcon, ChevronLeftIcon } from '@heroicons/vue/24/solid';
 
 const dateStore = useDateStore();
 const router = useRouter();
@@ -21,6 +22,8 @@ function navigateWeek(direction) {
   dateStore.setDate(targetDate);
   router.push(`/day/${targetDate}`);
 }
+
+const isDateDisabled = date => !dateStore.isDateSelectable(date);
 </script>
 
 <template>
@@ -28,23 +31,10 @@ function navigateWeek(direction) {
     <div class="flex justify-between items-center gap-3">
       <button
         @click="navigateWeek('prev')"
-        class="flex items-center justify-center w-8 h-8 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200 active:scale-95"
+        class="flex items-center justify-center w-6 h-6 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200 active:scale-95"
         title="Previous week"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="2"
-          stroke="currentColor"
-          class="w-5 h-5"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M15.75 19.5L8.25 12l7.5-7.5"
-          />
-        </svg>
+        <ChevronLeftIcon />
       </button>
       <button
         v-for="day in formattedWeekDates"
@@ -56,7 +46,11 @@ function navigateWeek(direction) {
             day.isSelected,
           'bg-primary-50/50 text-primary-600 font-medium': day.isToday,
           'text-slate-600': !day.isSelected && !day.isToday,
+          'opacity-50 hover:cursor-auto hover:bg-transparent': isDateDisabled(
+            day.date
+          ),
         }"
+        :disabled="isDateDisabled(day.date)"
       >
         <span
           class="text-xs font-medium uppercase tracking-wider mb-1 opacity-80"
@@ -68,23 +62,10 @@ function navigateWeek(direction) {
       </button>
       <button
         @click="navigateWeek('next')"
-        class="flex items-center justify-center w-8 h-8 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200 active:scale-95"
+        class="flex items-center justify-center w-6 h-6 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200 active:scale-95"
         title="Next week"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="2"
-          stroke="currentColor"
-          class="w-5 h-5"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M8.25 4.5l7.5 7.5-7.5 7.5"
-          />
-        </svg>
+        <ChevronRightIcon />
       </button>
     </div>
   </nav>

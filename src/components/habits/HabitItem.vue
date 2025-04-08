@@ -3,7 +3,7 @@ import { computed, ref } from 'vue';
 import { useHabitsStore } from '@/stores/habits';
 import Checkbox from '@/components/ui/Checkbox.vue';
 import { PencilIcon, TrashIcon } from '@heroicons/vue/24/solid';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, isToday } from 'date-fns';
 import { useRouter } from 'vue-router';
 import ConfirmDialog from '../ui/ConfirmDialog.vue';
 
@@ -35,9 +35,14 @@ const props = defineProps({
 });
 
 const timeAgo = computed(() => {
-  return formatDistanceToNow(new Date(props.habit.created_at), {
-    addSuffix: true,
-  });
+  const date = new Date(props.habit.created_at);
+  if (isToday(date)) {
+    return 'today';
+  } else {
+    return formatDistanceToNow(date, {
+      addSuffix: true,
+    });
+  }
 });
 
 function handleToggle() {
@@ -45,7 +50,7 @@ function handleToggle() {
 }
 
 function navigateToEdit() {
-  router.push({ name: 'edit habit', params: { id: props.habit.id } });
+  router.push({ name: 'editHabit', params: { id: props.habit.id } });
 }
 
 function openDeleteDialog(habit) {

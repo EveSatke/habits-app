@@ -5,28 +5,14 @@ import { useHabitsStore } from '@/stores/habits';
 import { useDateStore } from '@/stores/date';
 import { useRouter, useRoute } from 'vue-router';
 import { ClockIcon } from '@heroicons/vue/24/outline';
+import { useHabitNavigation } from '@/composables/useHabitNavigation';
 
 const habitsStore = useHabitsStore();
 const dateStore = useDateStore();
-const router = useRouter();
-const route = useRoute();
+const { navigateToAddHabit } = useHabitNavigation();
 const currentHabits = computed(() => {
   return habitsStore.getHabitsForDate(dateStore.currentDate);
 });
-
-async function navigateToAddHabit() {
-  try {
-    const date = route.params.date;
-
-    if (!date) {
-      console.error('No date provided');
-      return;
-    }
-    await router.push(`/habits/new?date=${date}`);
-  } catch (error) {
-    console.error('Navigation failed:', error);
-  }
-}
 </script>
 
 <template>

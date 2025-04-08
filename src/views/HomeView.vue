@@ -7,8 +7,11 @@ import WeekNavigator from '@/components/WeekNavigator.vue';
 import ProfilePicture from '@/components/header/ProfilePicture.vue';
 import HabitList from '@/components/habits/HabitList.vue';
 import { PlusIcon } from '@heroicons/vue/24/solid';
+import { useHabitNavigation } from '@/composables/useHabitNavigation';
+
 const dateStore = useDateStore();
 const route = useRoute();
+const { navigateToAddHabit } = useHabitNavigation();
 
 onMounted(() => {
   dateStore.setDateFromRouter(route.params.date);
@@ -36,13 +39,13 @@ watch(
           <span v-if="dateStore.isToday">Today's habits</span>
           <span v-else>Habits for {{ dateStore.formattedDate }}</span>
         </h2>
-        <router-link
-          :to="`/habits/new?date=${route.params.date}`"
-          class="inline-flex items-center px-4 py-2 bg-primary-500 text-white rounded-lg shadow-sm hover:bg-primary-600 transition-colors duration-200"
+        <button
+          @click="navigateToAddHabit"
+          class="inline-flex items-center px-4 py-2 bg-primary-500 text-white rounded-lg shadow-sm hover:bg-primary-600 transition-colors duration-200 hover:cursor-pointer"
         >
           <PlusIcon class="h-5 w-5 mr-2" />
           Add habit
-        </router-link>
+        </button>
       </div>
       <HabitList />
     </section>

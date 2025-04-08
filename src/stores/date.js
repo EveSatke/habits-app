@@ -28,8 +28,9 @@ export const useDateStore = defineStore('dateStore', {
       return isToday(new Date(this.currentDate));
     },
 
-    isDateSelectable(date) {
-      const dateString = date.toISOString().split('T')[0];
+    isDateSelectable: state => dateString => {
+      const today = new Date().toISOString().split('T')[0];
+      return dateString <= today;
     },
   },
 
