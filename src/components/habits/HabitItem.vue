@@ -2,13 +2,19 @@
 import { computed, ref } from 'vue';
 import { useHabitsStore } from '@/stores/habits';
 import Checkbox from '@/components/ui/Checkbox.vue';
-import { PencilIcon, TrashIcon } from '@heroicons/vue/24/solid';
+import {
+  PencilIcon,
+  TrashIcon,
+  PlayCircleIcon,
+  PauseCircleIcon,
+} from '@heroicons/vue/24/solid';
 import { formatDistanceToNow, isToday } from 'date-fns';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import ConfirmDialog from '../ui/ConfirmDialog.vue';
 
 const habitsStore = useHabitsStore();
 const router = useRouter();
+const route = useRoute();
 const isDeleteDialogOpen = ref(false);
 const habitToDelete = ref(null);
 const confirmDialogDescription = computed(() => {
@@ -45,6 +51,14 @@ const timeAgo = computed(() => {
   }
 });
 
+const isStopped = computed(() => {
+  return props.habit.stopped_at && props.habit.stopped_at <= props.date;
+});
+
+const toggleHabitStatus = () => {
+  habitsStore.toggleHabitStatus(props.habit.id, props.date);
+};
+
 function handleToggle() {
   habitsStore.toggleHabitCompletion(props.habit.id, props.date);
 }
@@ -79,6 +93,7 @@ function confirmDelete() {
     :class="{
       'bg-emerald-100 hover:bg-emerald-200/80': isCompleted,
       'bg-white hover:bg-slate-100': !isCompleted,
+      'opacity-50': isStopped,
     }"
   >
     <div
@@ -106,6 +121,24 @@ function confirmDelete() {
     <div
       class="flex items-center gap-1 opacity-60 hover:opacity-100 transition-opacity"
     >
+      <button
+        @click="toggleHabitStatus"
+        type="button"
+        class="p-1.5 text-slate-600 hover:text-slate-900 rounded-md hover:bg-white/50 transition-colors hover:cursor-pointer"
+        :title="isStopped ? 'Resume habit' : 'Stop habit'"
+      >
+        <PlayCircleIcon
+          v-if="isStopped"
+          class="w-4 h-4 text-green-500 hover:text-green-600"
+        />
+        <PauseCircleIcon
+          v-else
+          class="w-4 h-4 text-amber-500 hover:text-amber-600"
+        />
+        <span class="sr-only">{{
+          isStopped ? 'Resume habit' : 'Stop habit'
+        }}</span>
+      </button>
       <button
         @click="navigateToEdit"
         type="button"

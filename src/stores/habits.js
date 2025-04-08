@@ -7,7 +7,9 @@ export const useHabitsStore = defineStore('habitsStore', {
   }),
   getters: {
     getHabitsForDate: state => dateString => {
-      return state.habits.filter(habit => habit.created_at <= dateString);
+      return state.habits.filter(habit => {
+        return habit.created_at <= dateString;
+      });
     },
     isHabitCompleted: state => (date, habitId) => {
       return Boolean(state.completions[date]?.[habitId]);
@@ -19,6 +21,7 @@ export const useHabitsStore = defineStore('habitsStore', {
         id: Date.now().toString(),
         name: name.trim(),
         created_at: dateString,
+        stopped_at: null,
       };
       this.habits.push(habit);
       this.saveToLocalStorage();
@@ -44,6 +47,14 @@ export const useHabitsStore = defineStore('habitsStore', {
         return true;
       }
       return false;
+    },
+
+    toggleHabitStatus(habitId, date) {
+      const habit = this.habits.find(h => h.id === habitId);
+      if (habit) {
+        habit.stopped_at = habit.stopped_at ? null : date;
+        this.saveToLocalStorage();
+      }
     },
 
     removeHabit(habitId) {
