@@ -6,9 +6,9 @@ import {
   DialogDescription,
 } from '@headlessui/vue';
 import { ExclamationTriangleIcon, XMarkIcon } from '@heroicons/vue/24/outline';
-import Button from './Button.vue';
+import Button from './BaseButton.vue';
 
-const props = defineProps({
+defineProps({
   isOpen: {
     type: Boolean,
     required: true,

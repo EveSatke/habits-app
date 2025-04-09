@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useHabitsStore } from '@/stores/habits';
-import Button from '@/components/ui/Button.vue';
+import Button from '@/components/ui/BaseButton.vue';
 import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();

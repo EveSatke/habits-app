@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useHabitsStore } from '@/stores/habits';
-import Checkbox from '@/components/ui/Checkbox.vue';
+import Checkbox from '@/components/ui/BaseCheckbox.vue';
 import {
   PencilIcon,
   TrashIcon,
@@ -9,7 +9,7 @@ import {
   PauseCircleIcon,
 } from '@heroicons/vue/24/solid';
 import { formatDistanceToNow, isToday } from 'date-fns';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import ConfirmDialog from '../ui/ConfirmDialog.vue';
 
 const habitsStore = useHabitsStore();

@@ -3,7 +3,6 @@ import { computed } from 'vue';
 import HabitItem from '@/components/habits/HabitItem.vue';
 import { useHabitsStore } from '@/stores/habits';
 import { useDateStore } from '@/stores/date';
-import { useRouter, useRoute } from 'vue-router';
 import { ClockIcon } from '@heroicons/vue/24/outline';
 import { useHabitNavigation } from '@/composables/useHabitNavigation';
 

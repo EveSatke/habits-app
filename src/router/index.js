@@ -47,7 +47,7 @@ const router = createRouter({
     },
     {
       path: '/:pathMatch(.*)*',
-      redirect: to => {
+      redirect: () => {
         return {
           name: 'error',
           query: { type: 'not-found' },

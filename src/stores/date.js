@@ -45,7 +45,7 @@ export const useDateStore = defineStore('dateStore', {
       return isYesterday(new Date(this.currentDate));
     },
 
-    isDateSelectable: state => dateString => {
+    isDateSelectable: () => dateString => {
       const today = new Date().toISOString().split('T')[0];
       return dateString <= today;
     },

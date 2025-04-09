@@ -1,6 +1,4 @@
-import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useDateStore } from '@/stores/date';
 
 export function useHabitNavigation() {
   const route = useRoute();

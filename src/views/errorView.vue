@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
-import Button from '@/components/ui/Button.vue';
+import Button from '@/components/ui/BaseButton.vue';
 import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline';
 
 const route = useRoute();
