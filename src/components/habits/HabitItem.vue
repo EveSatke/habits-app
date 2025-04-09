@@ -89,83 +89,84 @@ function confirmDelete() {
 
 <template>
   <div
-    class="group relative flex items-center p-3 mb-4 rounded-lg shadow-xs transition-all duration-200"
+    class="group relative flex flex-col sm:flex-row sm:items-center gap-3 p-4 mb-3 rounded-xl shadow-sm bg-white hover:bg-slate-50 transition-all duration-200"
     :class="{
-      'bg-emerald-100 hover:bg-emerald-200/80': isCompleted,
-      'bg-white hover:bg-slate-100': !isCompleted,
-      'opacity-50': isStopped,
+      'bg-emerald-50 hover:bg-emerald-100/80': isCompleted,
+      'opacity-70': isStopped,
     }"
   >
-    <div
-      class="absolute left-0 top-0 bottom-0 w-1 rounded-l-lg transition-all duration-200"
-      :class="isCompleted ? 'bg-emerald-500' : 'bg-transparent'"
-    />
+    <div class="flex items-center flex-1 min-w-0 gap-3">
+      <Checkbox
+        :checked="isCompleted"
+        @update:checked="handleToggle"
+        class="mt-1"
+      />
 
-    <div class="flex items-center gap-3 flex-1 min-w-0">
-      <Checkbox :checked="isCompleted" @update:checked="handleToggle" />
-
-      <div class="flex flex-col gap-0.5 min-w-0">
-        <h3
-          class="font-medium truncate text-slate-900"
-          :class="{ 'text-slate-700': isCompleted }"
-        >
+      <div class="flex-1 min-w-0">
+        <h3 class="font-medium text-slate-900 truncate">
           {{ habit.name }}
         </h3>
 
-        <span class="text-xs text-slate-400 font-medium">
-          Started {{ timeAgo }}
-        </span>
+        <div class="flex flex-wrap items-center gap-2 mt-1">
+          <span class="text-xs text-slate-500 font-medium">
+            Started {{ timeAgo }}
+          </span>
+
+          <span
+            v-if="isStopped"
+            class="inline-flex items-center px-2 rounded-full text-xs font-medium bg-amber-100 text-amber-800"
+          >
+            Paused
+          </span>
+        </div>
       </div>
     </div>
 
     <div
-      class="flex items-center gap-1 opacity-60 hover:opacity-100 transition-opacity"
+      class="flex items-center gap-1 mt-3 sm:mt-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100"
     >
       <button
         @click="toggleHabitStatus"
         type="button"
-        class="p-1.5 text-slate-600 hover:text-slate-900 rounded-md hover:bg-white/50 transition-colors hover:cursor-pointer"
+        class="flex-1 sm:flex-initial inline-flex items-center justify-center p-2 rounded-lg hover:bg-slate-100 transition-colors"
         :title="isStopped ? 'Resume habit' : 'Stop habit'"
       >
-        <PlayCircleIcon
-          v-if="isStopped"
-          class="w-4 h-4 text-green-500 hover:text-green-600"
-        />
-        <PauseCircleIcon
-          v-else
-          class="w-4 h-4 text-amber-500 hover:text-amber-600"
-        />
-        <span class="sr-only">{{
-          isStopped ? 'Resume habit' : 'Stop habit'
-        }}</span>
+        <PlayCircleIcon v-if="isStopped" class="w-5 h-5 text-green-500" />
+        <PauseCircleIcon v-else class="w-5 h-5 text-amber-500" />
+        <span class="ml-2 text-sm font-medium text-slate-600 sm:hidden">
+          {{ isStopped ? 'Resume' : 'Stop' }}
+        </span>
       </button>
+
       <button
         @click="navigateToEdit"
         type="button"
-        class="p-1.5 text-slate-600 hover:text-slate-900 rounded-md hover:bg-white/50 transition-colors hover:cursor-pointer"
-        title="Edit habit"
+        class="flex-1 sm:flex-initial inline-flex items-center justify-center p-2 rounded-lg hover:bg-slate-100 transition-colors"
       >
-        <PencilIcon class="w-4 h-4" />
-        <span class="sr-only">Edit habit</span>
+        <PencilIcon class="w-5 h-5 text-slate-500" />
+        <span class="ml-2 text-sm font-medium text-slate-600 sm:hidden">
+          Edit
+        </span>
       </button>
+
       <button
         @click="openDeleteDialog(habit)"
         type="button"
-        class="p-1.5 text-slate-600 hover:text-red-600 rounded-md hover:bg-red-50 transition-colors hover:cursor-pointer"
-        title="Delete habit"
+        class="flex-1 sm:flex-initial inline-flex items-center justify-center p-2 rounded-lg hover:bg-red-50 text-red-600 transition-colors"
       >
-        <TrashIcon class="w-4 h-4" />
-        <span class="sr-only">Delete habit</span>
+        <TrashIcon class="w-5 h-5" />
+        <span class="ml-2 text-sm font-medium sm:hidden"> Delete </span>
       </button>
-      <ConfirmDialog
-        :is-open="isDeleteDialogOpen"
-        title="Delete Habit"
-        :description="confirmDialogDescription"
-        cancel-text="Cancel"
-        confirm-text="Delete"
-        @close="cancelDelete"
-        @confirm="confirmDelete"
-      />
     </div>
+
+    <ConfirmDialog
+      :is-open="isDeleteDialogOpen"
+      title="Delete Habit"
+      :description="confirmDialogDescription"
+      cancel-text="Cancel"
+      confirm-text="Delete"
+      @close="cancelDelete"
+      @confirm="confirmDelete"
+    />
   </div>
 </template>

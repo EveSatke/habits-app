@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { format, isToday } from 'date-fns';
+import { format, isToday, isYesterday } from 'date-fns';
 
 export const useDateStore = defineStore('dateStore', {
   state: () => ({
@@ -20,12 +20,29 @@ export const useDateStore = defineStore('dateStore', {
       return dates;
     },
 
+    compactWeekDates() {
+      const dates = [];
+      const current = new Date(this.currentDate);
+      current.setHours(12, 0, 0, 0);
+
+      for (let i = -2; i <= 2; i++) {
+        const date = new Date(current);
+        date.setDate(date.getDate() + i);
+        dates.push(date.toISOString().split('T')[0]);
+      }
+      return dates;
+    },
+
     formattedDate() {
       return format(new Date(this.currentDate), 'MMMM d, yyyy');
     },
 
     isToday() {
       return isToday(new Date(this.currentDate));
+    },
+
+    isYesterday() {
+      return isYesterday(new Date(this.currentDate));
     },
 
     isDateSelectable: state => dateString => {
@@ -37,22 +54,6 @@ export const useDateStore = defineStore('dateStore', {
   actions: {
     setDate(dateString) {
       this.currentDate = dateString;
-    },
-
-    nextDay() {
-      const date = new Date(this.currentDate);
-      date.setDate(date.getDate() + 1);
-      this.currentDate = date.toISOString().split('T')[0];
-    },
-
-    previousDay() {
-      const date = new Date(this.currentDate);
-      date.setDate(date.getDate() - 1);
-      this.currentDate = date.toISOString().split('T')[0];
-    },
-
-    goToToday() {
-      this.currentDate = new Date().toISOString().split('T')[0];
     },
 
     setDateFromRouter(routeDate) {
