@@ -29,19 +29,23 @@ const date = computed(() => {
   return route.params.date || new Date().toISOString().split('T')[0];
 });
 
-function handleSubmit() {
+async function handleSubmit() {
   try {
     if (habitName.value.trim().length < 3) {
       errors.value.name = 'Habit name must be at least 3 characters long';
       return;
     }
     if (isEditMode.value) {
-      habitStore.editHabit(props.habit.id, habitName.value);
+      const success = habitStore.editHabit(props.habit.id, habitName.value);
+      if (!success) {
+        throw new Error('Failed to edit habit');
+      }
     } else {
       habitStore.addHabit(habitName.value, date.value);
     }
-    router.push(`/day/${date.value}`);
+    await router.push(`/day/${date.value}`);
   } catch (error) {
+    console.error('Failed to save habit. Please try again.', error);
     errors.value.submit = 'Failed to process habit. Please try again.';
   }
 }

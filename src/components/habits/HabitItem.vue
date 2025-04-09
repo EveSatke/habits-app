@@ -14,7 +14,6 @@ import ConfirmDialog from '../ui/ConfirmDialog.vue';
 
 const habitsStore = useHabitsStore();
 const router = useRouter();
-const route = useRoute();
 const isDeleteDialogOpen = ref(false);
 const habitToDelete = ref(null);
 const confirmDialogDescription = computed(() => {
@@ -78,11 +77,14 @@ function cancelDelete() {
   habitToDelete.value = null;
 }
 
-function confirmDelete() {
-  if (habitToDelete.value) {
-    habitsStore.removeHabit(props.habit.id);
+async function handleDelete() {
+  try {
+    if (!habitToDelete.value) return;
+    await habitsStore.removeHabit(habitToDelete.value.id);
     isDeleteDialogOpen.value = false;
     habitToDelete.value = null;
+  } catch (error) {
+    console.error('Failed to delete habit:', error);
   }
 }
 </script>
@@ -128,7 +130,7 @@ function confirmDelete() {
       <button
         @click="toggleHabitStatus"
         type="button"
-        class="flex-1 sm:flex-initial inline-flex items-center justify-center p-2 rounded-lg hover:bg-slate-100 transition-colors"
+        class="flex-1 sm:flex-initial inline-flex items-center justify-center p-2 rounded-lg hover:bg-slate-100 hover:cursor-pointer transition-colors"
         :title="isStopped ? 'Resume habit' : 'Stop habit'"
       >
         <PlayCircleIcon v-if="isStopped" class="w-5 h-5 text-green-500" />
@@ -141,7 +143,7 @@ function confirmDelete() {
       <button
         @click="navigateToEdit"
         type="button"
-        class="flex-1 sm:flex-initial inline-flex items-center justify-center p-2 rounded-lg hover:bg-slate-100 transition-colors"
+        class="flex-1 sm:flex-initial inline-flex items-center justify-center p-2 rounded-lg hover:bg-slate-100 transition-colors hover:cursor-pointer"
       >
         <PencilIcon class="w-5 h-5 text-slate-500" />
         <span class="ml-2 text-sm font-medium text-slate-600 sm:hidden">
@@ -152,7 +154,7 @@ function confirmDelete() {
       <button
         @click="openDeleteDialog(habit)"
         type="button"
-        class="flex-1 sm:flex-initial inline-flex items-center justify-center p-2 rounded-lg hover:bg-red-50 text-red-600 transition-colors"
+        class="flex-1 sm:flex-initial inline-flex items-center justify-center p-2 rounded-lg hover:bg-red-50 hover:cursor-pointer text-red-600 transition-colors"
       >
         <TrashIcon class="w-5 h-5" />
         <span class="ml-2 text-sm font-medium sm:hidden"> Delete </span>
@@ -166,7 +168,7 @@ function confirmDelete() {
       cancel-text="Cancel"
       confirm-text="Delete"
       @close="cancelDelete"
-      @confirm="confirmDelete"
+      @confirm="handleDelete"
     />
   </div>
 </template>

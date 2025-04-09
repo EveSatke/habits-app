@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
-import EditHabitView from '@/views/EditHabitView.vue';
 import { useDateStore } from '@/stores/date';
+import ErrorView from '../views/errorView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,8 +14,10 @@ const router = createRouter({
         const dateStore = useDateStore();
         const requestedDate = to.params.date;
         if (!dateStore.isDateSelectable(requestedDate)) {
-          const today = new Date().toISOString().split('T')[0];
-          return { name: 'day', params: { date: today } };
+          return {
+            name: 'error',
+            query: { type: 'future-date' },
+          };
         }
       },
     },
@@ -25,11 +27,10 @@ const router = createRouter({
       component: () => import('../views/AddHabitView.vue'),
       beforeEnter: to => {
         const dateStore = useDateStore();
-
         if (!dateStore.isDateSelectable(to.params.date)) {
           return {
-            name: 'home',
-            query: { error: 'Cannot add habits for future dates' },
+            name: 'error',
+            query: { type: 'future-date' },
           };
         }
       },
@@ -39,8 +40,34 @@ const router = createRouter({
       name: 'editHabit',
       component: () => import('@/views/EditHabitView.vue'),
     },
-    { path: '/', redirect: '/day/today' },
-    { path: '/day', redirect: '/day/today' },
+    {
+      path: '/error',
+      name: 'error',
+      component: ErrorView,
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: to => {
+        return {
+          name: 'error',
+          query: { type: 'not-found' },
+        };
+      },
+    },
+    {
+      path: '/',
+      redirect: () => {
+        const today = new Date().toISOString().split('T')[0];
+        return { name: 'day', params: { date: today } };
+      },
+    },
+    {
+      path: '/day',
+      redirect: () => {
+        const today = new Date().toISOString().split('T')[0];
+        return { name: 'day', params: { date: today } };
+      },
+    },
   ],
 });
 

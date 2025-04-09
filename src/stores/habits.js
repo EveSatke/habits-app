@@ -70,19 +70,29 @@ export const useHabitsStore = defineStore('habitsStore', {
     },
 
     loadFromLocalStorage() {
-      const storedData = localStorage.getItem('habits-data');
-      if (storedData) {
-        const data = JSON.parse(storedData);
-        this.habits = data.habits || [];
-        this.completions = data.completions || {};
+      try {
+        const storedData = localStorage.getItem('habits-data');
+        if (storedData) {
+          const data = JSON.parse(storedData);
+          this.habits = data.habits || [];
+          this.completions = data.completions || {};
+        }
+      } catch (error) {
+        console.error('Failed to load habits', error);
+        this.habits = [];
+        this.completions = {};
       }
     },
 
     saveToLocalStorage() {
-      localStorage.setItem(
-        'habits-data',
-        JSON.stringify({ habits: this.habits, completions: this.completions })
-      );
+      try {
+        localStorage.setItem(
+          'habits-data',
+          JSON.stringify({ habits: this.habits, completions: this.completions })
+        );
+      } catch (error) {
+        console.error('Failed to save habits', error);
+      }
     },
   },
 });
