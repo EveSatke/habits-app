@@ -1,12 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { useHabitsStore } from '@/stores/habits';
 import HabitForm from '@/components/habits/HabitForm.vue';
+import { useHabitsStore, type Habit } from '@/stores/habits';
 
 const route = useRoute();
 const habitStore = useHabitsStore();
 const habitId = route.params.id;
-const habit = habitStore.habits.find(h => h.id === habitId);
+const habit = habitStore.habits.find((h: Habit) => h.id === habitId);
 </script>
 
 <template>

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useHabitsStore } from '@/stores/habits';
 import Checkbox from '@/components/ui/BaseCheckbox.vue';
@@ -77,10 +77,10 @@ function cancelDelete() {
   habitToDelete.value = null;
 }
 
-async function handleDelete() {
+function handleDelete() {
   try {
     if (!habitToDelete.value) return;
-    await habitsStore.removeHabit(habitToDelete.value.id);
+    habitsStore.removeHabit(habitToDelete.value.id);
     isDeleteDialogOpen.value = false;
     habitToDelete.value = null;
   } catch (error) {

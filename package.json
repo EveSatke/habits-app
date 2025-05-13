@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint . --fix",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
+    "type-check": "vue-tsc --noEmit",
     "format": "prettier --write src/",
     "stylelint": "stylelint \"**/*.{css,vue}\" --fix"
   },
@@ -24,9 +25,13 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
+    "@types/node": "^22.15.12",
+    "@typescript-eslint/eslint-plugin": "^8.32.0",
+    "@typescript-eslint/parser": "^8.32.0",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/eslint-config-prettier": "^10.2.0",
-    "eslint": "^9.24.0",
+    "@vue/tsconfig": "^0.7.0",
+    "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^3.6.0",
     "eslint-plugin-import": "^2.31.0",
@@ -36,7 +41,9 @@
     "stylelint": "^16.17.0",
     "stylelint-config-recommended-vue": "^1.6.0",
     "stylelint-config-standard": "^37.0.0",
+    "typescript": "^5.8.3",
     "vite": "^6.2.1",
-    "vite-plugin-vue-devtools": "^7.7.2"
+    "vite-plugin-vue-devtools": "^7.7.2",
+    "vue-tsc": "^2.2.10"
   }
 }

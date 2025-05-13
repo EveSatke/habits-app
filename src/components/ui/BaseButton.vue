@@ -1,19 +1,14 @@
-<script setup>
-defineProps({
-  type: {
-    type: String,
-    default: 'button',
-    validator: value => ['button', 'submit', 'reset'].includes(value),
-  },
-  variant: {
-    type: String,
-    default: 'primary',
-    validator: value => ['primary', 'secondary', 'danger'].includes(value),
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
+<script setup lang="ts">
+interface Props {
+  type?: 'button' | 'submit' | 'reset';
+  variant?: 'primary' | 'secondary' | 'danger';
+  disabled?: boolean;
+}
+
+withDefaults(defineProps<Props>(), {
+  type: 'button',
+  variant: 'primary',
+  disabled: false,
 });
 </script>
 

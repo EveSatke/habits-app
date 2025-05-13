@@ -1,13 +1,11 @@
-<script setup>
-defineProps({
-  checked: {
-    type: Boolean,
-    default: false,
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
+<script setup lang="ts">
+interface Props {
+  checked?: boolean;
+  disabled?: boolean;
+}
+withDefaults(defineProps<Props>(), {
+  checked: false,
+  disabled: false,
 });
 
 const emit = defineEmits(['update:checked']);

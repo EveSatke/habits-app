@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useHabitsStore } from '@/stores/habits';
 import Button from '@/components/ui/BaseButton.vue';

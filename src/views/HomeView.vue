@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useDateStore } from '@/stores/date';
@@ -14,13 +14,13 @@ const route = useRoute();
 const { navigateToAddHabit } = useHabitNavigation();
 
 onMounted(() => {
-  dateStore.setDateFromRouter(route.params.date);
+  dateStore.setDateFromRouter(route.params.date as string);
 });
 
 watch(
   () => route.params.date,
   newDate => {
-    dateStore.setDateFromRouter(newDate);
+    dateStore.setDateFromRouter(newDate as string);
   }
 );
 </script>
@@ -53,7 +53,6 @@ watch(
       </section>
     </main>
 
-    <!-- Floating Action Button (mobile only) -->
     <button
       @click="navigateToAddHabit"
       class="fixed right-4 bottom-4 sm:hidden inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary-500 text-white shadow-lg hover:bg-primary-600 active:scale-95 transition-all duration-200"

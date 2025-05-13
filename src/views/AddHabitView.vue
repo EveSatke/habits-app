@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import HabitForm from '@/components/habits/HabitForm.vue';
 </script>
 

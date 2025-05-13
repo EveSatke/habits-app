@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {
   Dialog,
   DialogPanel,
@@ -8,32 +8,22 @@ import {
 import { ExclamationTriangleIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import Button from './BaseButton.vue';
 
-defineProps({
-  isOpen: {
-    type: Boolean,
-    required: true,
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  confirmText: {
-    type: String,
-    default: 'Delete',
-  },
-  cancelText: {
-    type: String,
-    default: 'Cancel',
-  },
-  variant: {
-    type: String,
-    default: 'danger',
-    validator: value => ['danger', 'warning', 'primary'].includes(value),
-  },
+interface Props {
+  isOpen: boolean;
+  title: string;
+  description: string;
+  confirmText?: string;
+  cancelText?: string;
+  variant?: 'danger' | 'warning' | 'primary';
+}
+
+withDefaults(defineProps<Props>(), {
+  isOpen: false,
+  title: '',
+  description: '',
+  confirmText: '',
+  cancelText: '',
+  variant: 'danger',
 });
 
 const emit = defineEmits(['close', 'confirm']);

@@ -1,33 +1,44 @@
 import { defineStore } from 'pinia';
 
+export interface Habit {
+  id: string;
+  name: string;
+  created_at: string;
+  stopped_at?: string | null;
+}
+
 export const useHabitsStore = defineStore('habitsStore', {
   state: () => ({
-    habits: [],
-    completions: {},
+    habits: [] as Habit[],
+    completions: {} as Record<string, Record<string, boolean>>,
   }),
   getters: {
-    getHabitsForDate: state => dateString => {
-      return state.habits.filter(habit => {
-        return habit.created_at <= dateString;
-      });
-    },
-    isHabitCompleted: state => (date, habitId) => {
-      return Boolean(state.completions[date]?.[habitId]);
-    },
+    getHabitsForDate:
+      state =>
+      (date: string): Habit[] => {
+        return state.habits.filter(habit => {
+          return habit.created_at <= date;
+        });
+      },
+    isHabitCompleted:
+      state =>
+      (date: string, habitId: string): boolean => {
+        return Boolean(state.completions[date]?.[habitId]);
+      },
   },
   actions: {
-    addHabit(name, dateString) {
-      const habit = {
+    addHabit(name: string, date: string): void {
+      const habit: Habit = {
         id: Date.now().toString(),
         name: name.trim(),
-        created_at: dateString,
+        created_at: date,
         stopped_at: null,
       };
       this.habits.push(habit);
       this.saveToLocalStorage();
     },
 
-    toggleHabitCompletion(habitId, date) {
+    toggleHabitCompletion(habitId: string, date: string): void {
       if (!this.completions[date]) {
         this.completions[date] = {};
       }
@@ -35,7 +46,7 @@ export const useHabitsStore = defineStore('habitsStore', {
       this.saveToLocalStorage();
     },
 
-    editHabit(habitId, newName) {
+    editHabit(habitId: string, newName: string): boolean {
       const habitIndex = this.habits.findIndex(h => h.id === habitId);
 
       if (habitIndex !== -1) {
@@ -49,7 +60,7 @@ export const useHabitsStore = defineStore('habitsStore', {
       return false;
     },
 
-    toggleHabitStatus(habitId, date) {
+    toggleHabitStatus(habitId: string, date: string): void {
       const habit = this.habits.find(h => h.id === habitId);
       if (habit) {
         habit.stopped_at = habit.stopped_at ? null : date;
@@ -57,7 +68,7 @@ export const useHabitsStore = defineStore('habitsStore', {
       }
     },
 
-    removeHabit(habitId) {
+    removeHabit(habitId: string): void {
       this.habits = this.habits.filter(habit => habit.id !== habitId);
       Object.keys(this.completions).forEach(date => {
         delete this.completions[date][habitId];
@@ -69,7 +80,7 @@ export const useHabitsStore = defineStore('habitsStore', {
       this.saveToLocalStorage();
     },
 
-    loadFromLocalStorage() {
+    loadFromLocalStorage(): void {
       try {
         const storedData = localStorage.getItem('habits-data');
         if (storedData) {
@@ -84,7 +95,7 @@ export const useHabitsStore = defineStore('habitsStore', {
       }
     },
 
-    saveToLocalStorage() {
+    saveToLocalStorage(): void {
       try {
         localStorage.setItem(
           'habits-data',

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { useDateStore } from '@/stores/date';
 import { useRouter } from 'vue-router';
@@ -7,7 +7,6 @@ import { ChevronRightIcon, ChevronLeftIcon } from '@heroicons/vue/24/solid';
 const dateStore = useDateStore();
 const router = useRouter();
 
-// Responsive dates computation
 const formattedWeekDates = computed(() => {
   const dates = dateStore.weekDates;
   const compactDates = dateStore.compactWeekDates;
@@ -18,19 +17,19 @@ const formattedWeekDates = computed(() => {
   };
 });
 
-function handleDateClick(date) {
+function handleDateClick(date: string) {
   dateStore.setDate(date);
   router.push(`/day/${date}`);
 }
 
-function navigateWeek(direction) {
+function navigateWeek(direction: 'prev' | 'next') {
   const dates = dateStore.weekDates;
   const targetDate = direction === 'next' ? dates[dates.length - 1] : dates[0];
   dateStore.setDate(targetDate);
   router.push(`/day/${targetDate}`);
 }
 
-const isDateDisabled = date => !dateStore.isDateSelectable(date);
+const isDateDisabled = (date: string) => !dateStore.isDateSelectable(date);
 </script>
 
 <template>

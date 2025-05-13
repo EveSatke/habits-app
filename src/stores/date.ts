@@ -8,7 +8,7 @@ export const useDateStore = defineStore('dateStore', {
 
   getters: {
     weekDates() {
-      const dates = [];
+      const dates: string[] = [];
       const current = new Date(this.currentDate);
       current.setHours(12, 0, 0, 0);
 
@@ -21,7 +21,7 @@ export const useDateStore = defineStore('dateStore', {
     },
 
     compactWeekDates() {
-      const dates = [];
+      const dates: string[] = [];
       const current = new Date(this.currentDate);
       current.setHours(12, 0, 0, 0);
 
@@ -33,38 +33,41 @@ export const useDateStore = defineStore('dateStore', {
       return dates;
     },
 
-    formattedDate() {
+    formattedDate(): string {
       return format(new Date(this.currentDate), 'MMMM d, yyyy');
     },
 
-    isToday() {
+    isToday(): boolean {
       return isToday(new Date(this.currentDate));
     },
 
-    isYesterday() {
+    isYesterday(): boolean {
       return isYesterday(new Date(this.currentDate));
     },
 
-    isDateSelectable: () => dateString => {
-      const today = new Date().toISOString().split('T')[0];
-      return dateString <= today;
-    },
+    isDateSelectable:
+      () =>
+      (date: string): boolean => {
+        const today = new Date().toISOString().split('T')[0];
+        return date <= today;
+      },
   },
 
   actions: {
-    setDate(dateString) {
-      this.currentDate = dateString;
+    setDate(date: string) {
+      this.currentDate = date;
     },
 
-    setDateFromRouter(routeDate) {
+    setDateFromRouter(routeDate: string) {
       this.currentDate = routeDate;
     },
-    formatDate(dateString) {
+    formatDate(dateString: string) {
       const date = new Date(dateString);
       return {
         date: dateString,
         dayName: format(date, 'EEE'),
         dayNumber: format(date, 'd'),
+        monthName: format(date, 'MMM'),
         isToday: isToday(date),
         isSelected: this.currentDate === dateString,
       };

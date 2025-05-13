@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
 import Button from '@/components/ui/BaseButton.vue';
 import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline';
@@ -20,8 +20,8 @@ const errorMessages = {
     description: 'An unexpected error occurred.',
   },
 };
-
-const error = errorMessages[route.query.type || 'default'];
+type ErrorType = 'future-date' | 'not-found' | 'default';
+const error = errorMessages[(route.query.type as ErrorType) || 'default'];
 
 const goHome = () => {
   const today = new Date().toISOString().split('T')[0];

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import HabitItem from '@/components/habits/HabitItem.vue';
 import { useHabitsStore } from '@/stores/habits';
