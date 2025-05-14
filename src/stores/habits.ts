@@ -25,6 +25,13 @@ export const useHabitsStore = defineStore('habitsStore', {
       (date: string, habitId: string): boolean => {
         return Boolean(state.completions[date]?.[habitId]);
       },
+    doesHabitExist:
+      state =>
+      (name: string): boolean => {
+        return state.habits.some(
+          habit => habit.name.toLowerCase() === name.toLowerCase().trim()
+        );
+      },
   },
   actions: {
     addHabit(name: string, date: string): void {
