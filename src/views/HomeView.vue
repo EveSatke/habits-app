@@ -3,11 +3,12 @@ import { watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useDateStore } from '@/stores/date';
 import { onMounted } from 'vue';
-import WeekNavigator from '@/components/WeekNavigator.vue';
+import WeekNavigator from '@/components/navigation/WeekNavigator.vue';
 import ProfilePicture from '@/components/header/ProfilePicture.vue';
 import HabitList from '@/components/habits/HabitList.vue';
 import { PlusIcon } from '@heroicons/vue/24/solid';
 import { useHabitNavigation } from '@/composables/useHabitNavigation';
+import CalendarPicker from '@/components/navigation/CalendarPicker.vue';
 
 const dateStore = useDateStore();
 const route = useRoute();
@@ -28,8 +29,11 @@ watch(
 <template>
   <div class="relative min-h-screen pb-20 sm:pb-0">
     <main class="max-w-3xl mx-auto space-y-8 py-8">
-      <header class="flex items-center justify-between mb-12">
+      <header class="flex items-center justify-between mb-12 relative">
         <ProfilePicture />
+        <div class="absolute right-0">
+          <CalendarPicker />
+        </div>
       </header>
 
       <WeekNavigator />

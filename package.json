@@ -16,6 +16,7 @@
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.2.0",
     "@tailwindcss/vite": "^4.1.1",
+    "@vuepic/vue-datepicker": "^11.0.2",
     "date-fns": "^4.1.0",
     "pinia": "^3.0.1",
     "stylelint-config-standard-vue": "^1.0.0",
