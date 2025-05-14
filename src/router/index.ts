@@ -16,6 +16,14 @@ const routes: RouteRecordRaw[] = [
     beforeEnter: to => {
       const dateStore = useDateStore();
       const requestedDate = to.params.date as string;
+
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(requestedDate)) {
+        return {
+          name: 'error',
+          query: { type: 'not-found' },
+        };
+      }
+
       if (!dateStore.isDateSelectable(requestedDate)) {
         return {
           name: 'error',
