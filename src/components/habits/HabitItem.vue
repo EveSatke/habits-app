@@ -11,32 +11,27 @@ import {
 import { formatDistanceToNow, isToday } from 'date-fns';
 import { useRouter } from 'vue-router';
 import ConfirmDialog from '../ui/ConfirmDialog.vue';
+import type { Habit } from '@/stores/habits';
 
 const habitsStore = useHabitsStore();
 const router = useRouter();
 const isDeleteDialogOpen = ref(false);
-const habitToDelete = ref(null);
+const habitToDelete = ref<Habit | null>(null);
 const confirmDialogDescription = computed(() => {
   if (!habitToDelete.value) return '';
   return `Deleting "${habitToDelete.value.name}" will remove all tracking history. This can't be reversed.`;
 });
 
-const props = defineProps({
-  habit: {
-    type: Object,
-    required: true,
-    validator: prop => {
-      return ['id', 'name', 'created_at'].every(key => key in prop);
-    },
-  },
-  date: {
-    type: String,
-    required: true,
-  },
-  isCompleted: {
-    type: Boolean,
-    default: false,
-  },
+interface Props {
+  habit: Habit;
+  date: string;
+  isCompleted: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  habit: () => ({ id: '', name: '', created_at: '' }),
+  date: () => '',
+  isCompleted: false,
 });
 
 const timeAgo = computed(() => {
@@ -66,7 +61,7 @@ function navigateToEdit() {
   router.push({ name: 'editHabit', params: { id: props.habit.id } });
 }
 
-function openDeleteDialog(habit) {
+function openDeleteDialog(habit: Habit) {
   if (!habit) return;
   habitToDelete.value = habit;
   isDeleteDialogOpen.value = true;

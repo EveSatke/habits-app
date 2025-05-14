@@ -1,24 +1,29 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useHabitsStore } from '@/stores/habits';
+import { useHabitsStore, type Habit } from '@/stores/habits';
 import Button from '@/components/ui/BaseButton.vue';
 import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();
 const route = useRoute();
 const habitStore = useHabitsStore();
-const errors = ref({});
+const errors = ref<{
+  name?: string;
+  submit?: string;
+}>({});
 
-const props = defineProps({
-  mode: {
-    type: String,
-    required: true,
-    validator: value => ['add', 'edit'].includes(value),
-  },
-  habit: {
-    type: Object,
-    default: () => ({ name: '' }),
-  },
+interface Props {
+  mode: 'add' | 'edit';
+  habit?: Habit;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  mode: 'add',
+  habit: () => ({
+    id: '',
+    name: '',
+    created_at: new Date().toISOString().split('T')[0],
+  }),
 });
 
 const habitName = ref(props.habit.name);
@@ -41,9 +46,9 @@ async function handleSubmit() {
         throw new Error('Failed to edit habit');
       }
     } else {
-      habitStore.addHabit(habitName.value, date.value);
+      habitStore.addHabit(habitName.value, date.value as string);
     }
-    await router.push(`/day/${date.value}`);
+    await router.push(`/day/${date.value as string}`);
   } catch (error) {
     console.error('Failed to save habit. Please try again.', error);
     errors.value.submit = 'Failed to process habit. Please try again.';
