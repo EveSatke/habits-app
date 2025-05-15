@@ -17,7 +17,10 @@ export const useHabitsStore = defineStore('habitsStore', {
       state =>
       (date: string): Habit[] => {
         return state.habits.filter(habit => {
-          return habit.created_at <= date;
+          const isCreated = habit.created_at <= date;
+          const isRelevantForDate =
+            !habit.stopped_at || habit.stopped_at >= date;
+          return isCreated && isRelevantForDate;
         });
       },
     isHabitCompleted:

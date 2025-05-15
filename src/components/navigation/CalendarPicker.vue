@@ -25,10 +25,10 @@ const handleDateSelect = (date: Date) => {
   >
     <template #trigger>
       <button
-        class="flex items-center justify-center w-10 h-10 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200 active:scale-95 bg-white shadow-sm border border-slate-100"
+        class="flex items-center justify-center w-10 h-10 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200 active:scale-95 bg-white shadow-sm border border-slate-100 cursor-pointer"
         title="Open calendar"
       >
-        <CalendarIcon class="w-5 h-5" />
+        <CalendarIcon class="w-5 h-5 transition-colors duration-200" />
       </button>
     </template>
   </Datepicker>
