@@ -58,11 +58,17 @@ const validateHabit = (value: string): ValidationResult => {
     };
   }
 
-  if (habitStore.doesHabitExist(trimmedValue)) {
-    return {
-      isValid: false,
-      message: 'This habit already exists',
-    };
+  if (
+    props.mode === 'add' ||
+    (props.mode === 'edit' &&
+      trimmedValue.toLowerCase() !== props.habit?.name.toLowerCase())
+  ) {
+    if (habitStore.doesHabitExist(trimmedValue)) {
+      return {
+        isValid: false,
+        message: 'This habit already exists',
+      };
+    }
   }
 
   return { isValid: true };
@@ -81,20 +87,21 @@ const handleInput = () => {
 };
 
 const isButtonDisabled = computed(() => {
-  const value = habitName.value.trim();
-  return value.length < 3 || habitStore.doesHabitExist(value);
+  const validationResult = validateHabit(habitName.value);
+  return !validationResult.isValid;
 });
 
 async function handleSubmit() {
+  isDirty.value = true;
+  const validationResult = validateHabit(habitName.value);
+  if (!validationResult.isValid) {
+    errors.value.name = validationResult.message;
+    return;
+  }
+  errors.value.name = undefined;
+
   try {
     const value = habitName.value.trim();
-    const error = validateHabit(value).message;
-
-    if (error) {
-      errors.value.name = error;
-      return;
-    }
-
     if (isEditMode.value) {
       const success = habitStore.editHabit(props.habit.id, value);
       if (!success) {
@@ -112,8 +119,8 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <form class="space-y-6" @submit.prevent="handleSubmit">
-    <div class="space-y-2">
+  <form class="space-y-6" @submit.prevent="handleSubmit" novalidate>
+    <div class="space-y-1">
       <label for="habit-name" class="block text-sm font-medium text-slate-700"
         >Habit name</label
       >
@@ -127,37 +134,54 @@ async function handleSubmit() {
           placeholder="e.g., Morning meditation, Daily reading"
           class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200"
           :class="{
-            'border-red-300': errors.name,
+            'border-red-300 focus:border-red-500 focus:ring-red-500/20':
+              errors.name,
           }"
           required
           minlength="3"
           maxlength="50"
           autocomplete="off"
-          autofocus
+          aria-describedby="habit-name-error"
+          :aria-invalid="!!errors.name"
         />
-
-        <div
-          v-if="errors.name"
-          class="mt-2 flex items-center gap-2 text-sm text-red-500"
-        >
-          <svg
-            class="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          {{ errors.name }}
+        <div class="relative h-5">
+          <Transition name="fade">
+            <div
+              v-if="errors.name"
+              id="habit-name-error"
+              class="absolute inset-x-0 flex items-center gap-1 text-xs text-red-500 mt-0.5"
+              role="alert"
+            >
+              <svg
+                class="w-4 h-4 shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>{{ errors.name }}</span>
+            </div>
+          </Transition>
         </div>
       </div>
     </div>
-    <div class="flex flex-col gap-4 pt-4">
+    <Transition name="fade">
+      <div
+        v-if="errors.submit"
+        class="text-sm text-red-500 text-center -mt-2 mb-2"
+        role="alert"
+      >
+        {{ errors.submit }}
+      </div>
+    </Transition>
+    <div class="flex flex-col gap-4 pt-0">
       <Button type="submit" :disabled="isButtonDisabled" class="w-full">
         {{ isEditMode ? 'Save Changes' : 'Create Habit' }}
       </Button>
@@ -171,3 +195,18 @@ async function handleSubmit() {
     </div>
   </form>
 </template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-5px);
+}
+</style>
