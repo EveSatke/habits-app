@@ -1,17 +1,30 @@
 # Habits App
 
-A modern, mobile-first habit tracking application built with Vue 3 and Vite. Track your daily habits, monitor progress, and build consistent routines.
+A modern, mobile-first habit tracking application built with Vue 3, TypeScript, and Vite. Track your daily habits, monitor progress, and build consistent routines.
 
 ## Features
 
 - 📱 Mobile-first responsive design
 - 📅 Weekly habit tracking
+- 📆 Calendar date picker for easy navigation
 - ✅ Mark habits as complete/incomplete
-- ⏸️ Pause/resume habits
+- ⏹️ Stop/resume habits
 - 🗑️ Delete habits with confirmation
 - 📊 View past habits and progress
 - 🚫 Prevention of future date entries
 - 💾 Local storage persistence
+
+## Screenshots
+
+### Main View
+
+![Main View](/screenshots/desktop.png)
+_Main view of the habits tracking interface_
+
+### Mobile View
+
+![Mobile View](/screenshots/mobile.png)
+_Mobile-first responsive design_
 
 ## Prerequisites
 
@@ -43,6 +56,34 @@ To start the development server:
 npm run dev
 ```
 
+## Testing
+
+Run unit tests with Vitest:
+
+```bash
+npm run test
+```
+
+### End-to-End Testing with Playwright
+
+The project includes Playwright for end-to-end testing. You can run tests in two ways:
+
+Using VS Code Playwright Extension:
+
+- Install the "Playwright Test for VSCode" extension
+- Open the test file in VS Code
+- Click the "Run Test" button above the test or use the Testing sidebar
+
+#### Configuration
+
+Create a `.env` file in the root directory with the following content:
+
+```env
+PLAYWRIGHT_BASE_URL=http://localhost:5173
+```
+
+This URL should match your development server address. The default is set to Vite's default port.
+
 ## Building for Production
 
 To create a production build:
@@ -62,13 +103,14 @@ npm run preview
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
 - `npm run format` - Format code with Prettier
 - `npm run stylelint` - Run StyleLint for CSS
+- `npm run test` - Run unit tests with Vitest
 
 ## Tech Stack
 
 - [Vue 3](https://vuejs.org/) - Frontend framework
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
 - [Vite](https://vitejs.dev/) - Build tool
 - [Pinia](https://pinia.vuejs.org/) - State management
 - [Vue Router](https://router.vuejs.org/) - Routing
@@ -76,10 +118,13 @@ npm run preview
 - [Headless UI](https://headlessui.dev/) - UI components
 - [Hero Icons](https://heroicons.com/) - Icons
 - [date-fns](https://date-fns.org/) - Date utilities
+- [Vitest](https://vitest.dev/) - Unit testing
+- [Playwright](https://playwright.dev/) - End-to-end testing
 
 ## Project Structure
 
 habits-app/
+├── e2e/ # End-to-end tests
 ├── src/
 │ ├── assets/ # Static assets
 │ ├── components/ # Vue components
@@ -88,6 +133,6 @@ habits-app/
 │ ├── stores/ # Pinia stores
 │ ├── views/ # Page components
 │ ├── App.vue # Root component
-│ └── main.js # Application entry point
+│ └── main.ts # Application entry point
 ├── public/ # Public static assets
 └── index.html # HTML entry point
