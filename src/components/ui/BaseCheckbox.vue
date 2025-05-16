@@ -23,6 +23,7 @@ const emit = defineEmits(['update:checked']);
     ]"
     @click="emit('update:checked', !checked)"
     :disabled="disabled"
+    aria-label="checkbox"
   >
     <svg
       v-if="checked"
