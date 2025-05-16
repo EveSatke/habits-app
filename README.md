@@ -16,15 +16,13 @@ A modern, mobile-first habit tracking application built with Vue 3, TypeScript, 
 
 ## Screenshots
 
-### Main View
-
-![Main View](/screenshots/desktop.png)
-_Main view of the habits tracking interface_
-
-### Mobile View
-
-![Mobile View](/screenshots/mobile.png)
-_Mobile-first responsive design_
+<div align="center">
+  <img src="/screenshots/desktop.png" alt="Main Interface" width="600"/>
+  <p><em>Main view of the habits tracking interface</em></p>
+  
+  <img src="/screenshots/mobile.png" alt="Mobile View" width="600"/>
+  <p><em>Mobile-first responsive design</em></p>
+</div>
 
 ## Prerequisites
 
