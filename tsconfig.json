@@ -1,6 +1,12 @@
 {
   "extends": "@vue/tsconfig/tsconfig.json",
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/__tests__/**/*.ts"
+  ],
   "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "target": "esnext",
@@ -16,6 +22,6 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["node", "vite/client"]
+    "types": ["node", "vite/client", "vitest/globals"]
   }
 }
