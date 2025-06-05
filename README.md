@@ -64,13 +64,12 @@ npm run test
 
 ### End-to-End Testing with Playwright
 
-The project includes Playwright for end-to-end testing. You can run tests in two ways:
+To run Playwright end-to-end tests, use:
 
-Using VS Code Playwright Extension:
+````bash
+npm run test:e2e
 
-- Install the "Playwright Test for VSCode" extension
-- Open the test file in VS Code
-- Click the "Run Test" button above the test or use the Testing sidebar
+Make sure your development server is running before executing the tests.
 
 #### Configuration
 
@@ -78,7 +77,7 @@ Create a `.env` file in the root directory with the following content:
 
 ```env
 PLAYWRIGHT_BASE_URL=http://localhost:5173
-```
+````
 
 This URL should match your development server address. The default is set to Vite's default port.
 
@@ -96,15 +95,6 @@ To preview the production build:
 npm run preview
 ```
 
-## Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run format` - Format code with Prettier
-- `npm run stylelint` - Run StyleLint for CSS
-- `npm run test` - Run unit tests with Vitest
-
 ## Tech Stack
 
 - [Vue 3](https://vuejs.org/) - Frontend framework
@@ -118,19 +108,3 @@ npm run preview
 - [date-fns](https://date-fns.org/) - Date utilities
 - [Vitest](https://vitest.dev/) - Unit testing
 - [Playwright](https://playwright.dev/) - End-to-end testing
-
-## Project Structure
-
-habits-app/
-├── e2e/ # End-to-end tests
-├── src/
-│ ├── assets/ # Static assets
-│ ├── components/ # Vue components
-│ ├── composables/ # Vue composables
-│ ├── router/ # Vue Router configuration
-│ ├── stores/ # Pinia stores
-│ ├── views/ # Page components
-│ ├── App.vue # Root component
-│ └── main.ts # Application entry point
-├── public/ # Public static assets
-└── index.html # HTML entry point

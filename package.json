@@ -12,7 +12,8 @@
     "format": "prettier --write src/",
     "stylelint": "stylelint \"**/*.{css,vue}\" --fix",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
