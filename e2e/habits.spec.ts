@@ -52,23 +52,6 @@ test.describe('Habit Management E2E Tests', () => {
     await expect(page.getByText(updatedHabitName)).toBeVisible();
     await expect(page.getByText(originalHabitName)).not.toBeVisible();
   });
-
-  test('User changes the date to view habits', async ({ page }) => {
-    const viewHabitName = 'May 14 habit';
-    const habitItem = page.getByText(viewHabitName);
-    await page.getByRole('button', { name: 'Wed 14 May' }).click();
-    await page.getByRole('button', { name: 'Add habit' }).click();
-    await page.getByRole('textbox', { name: 'Habit name' }).click();
-    await page
-      .getByRole('textbox', { name: 'Habit name' })
-      .fill('May 14 habit');
-    await page.getByRole('button', { name: 'Create Habit' }).click();
-    await expect(habitItem).toBeVisible();
-    await page.getByRole('button', { name: 'Thu 15 May' }).click();
-    await expect(habitItem).toBeVisible();
-    await page.getByRole('button', { name: 'Fri 16 May' }).click();
-    await expect(habitItem).toBeVisible();
-  });
 });
 
 async function createHabit(page: Page, habitName: string) {

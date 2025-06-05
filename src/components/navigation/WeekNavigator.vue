@@ -30,6 +30,12 @@ function navigateWeek(direction: 'prev' | 'next') {
 }
 
 const isDateDisabled = (date: string) => !dateStore.isDateSelectable(date);
+
+const isNextWeekDisabled = computed(() => {
+  const dates = dateStore.weekDates;
+  const lastDate = dates[dates.length - 1];
+  return !dateStore.isDateSelectable(lastDate);
+});
 </script>
 
 <template>
@@ -39,7 +45,7 @@ const isDateDisabled = (date: string) => !dateStore.isDateSelectable(date);
     <div class="flex justify-between items-center gap-2 sm:gap-3">
       <button
         @click="navigateWeek('prev')"
-        class="flex items-center justify-center w-10 h-10 sm:w-6 sm:h-6 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200 active:scale-95"
+        class="flex items-center justify-center w-10 h-10 sm:w-6 sm:h-6 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200 active:scale-95 hover:cursor-pointer"
         title="Previous week"
       >
         <ChevronLeftIcon class="w-6 h-6 sm:w-4 sm:h-4" />
@@ -103,8 +109,13 @@ const isDateDisabled = (date: string) => !dateStore.isDateSelectable(date);
 
       <button
         @click="navigateWeek('next')"
-        class="flex items-center justify-center w-10 h-10 sm:w-6 sm:h-6 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200 active:scale-95"
+        class="flex items-center justify-center w-10 h-10 sm:w-6 sm:h-6 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200 active:scale-95 hover:cursor-pointer"
         title="Next week"
+        :disabled="isNextWeekDisabled"
+        :class="{
+          'opacity-50 cursor-not-allowed pointer-events-none':
+            isNextWeekDisabled,
+        }"
       >
         <ChevronRightIcon class="w-6 h-6 sm:w-4 sm:h-4" />
       </button>
