@@ -68,6 +68,7 @@ To run Playwright end-to-end tests, use:
 
 ````bash
 npm run test:e2e
+```
 
 Make sure your development server is running before executing the tests.
 
