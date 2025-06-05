@@ -66,7 +66,7 @@ npm run test
 
 To run Playwright end-to-end tests, use:
 
-````bash
+```bash
 npm run test:e2e
 ```
 
@@ -78,7 +78,7 @@ Create a `.env` file in the root directory with the following content:
 
 ```env
 PLAYWRIGHT_BASE_URL=http://localhost:5173
-````
+```
 
 This URL should match your development server address. The default is set to Vite's default port.
 
